@@ -10,48 +10,66 @@ import UIKit
 import PromiseKit
 
 final class ViewController: UIViewController {
-    private enum RErrors: Error {
-        case foo
+    private enum RatiosError: Error {
+        case generic
     }
 
     @IBOutlet var tableView: UITableView!
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(loadData(_:)), for: .valueChanged)
+        return refreshControl
+    }()
 
     private var model = [Double]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureTableView()
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
+    }
+
+    private func configureTableView() {
+        tableView.rowHeight = 64
+        tableView.dataSource = self
+        tableView.register(RatioCell.self, forCellReuseIdentifier: RatioCell.reuseIdentifier)
+        tableView.refreshControl = refreshControl
+        tableView.tableFooterView = UIView()
+    }
+
+    @objc func loadData(_ sender: UIRefreshControl) {
+        loadData()
+    }
+
+    private func loadData() {
         let neoPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/neo")
         let gasPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/gas")
         _ = when(fulfilled: [neoPromise, gasPromise]).done { [weak self] coins in
-            guard let `self` = self else { return }
-
-            guard let neoCoin: Coin = coins.first(where: { $0.id == "neo" }) else { return }
-            guard let gasCoin: Coin = coins.first(where: { $0.id == "gas" }) else { return }
+            guard
+                let `self` = self,
+                let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
+                let gasCoin: Coin = coins.first(where: { $0.id == "gas" })
+                else { return }
             self.model = [neoCoin.marketData.currentPrice.usdPrice / gasCoin.marketData.currentPrice.usdPrice]
-
             DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
             }
         }
     }
 
-    private func configureTableView() {
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.dataSource = self
-        tableView.register(RatioCell.self, forCellReuseIdentifier: RatioCell.reuseIdentifier)
-        tableView.tableFooterView = UIView()
-    }
-
-    func fetchCoin(_ urlString: String) -> Promise<Coin> {
+    private func fetchCoin(_ urlString: String) -> Promise<Coin> {
         return Promise { seal in
             let url = URL(string: urlString)!
             URLSession.shared.dataTask(with: url) { data, _, error in
                 do {
                     guard let data = data else {
-                        seal.reject(RErrors.foo)
+                        seal.reject(RatiosError.generic)
                         return
                     }
                     let coin = try JSONDecoder().decode(Coin.self, from: data)
@@ -79,7 +97,7 @@ extension ViewController: UITableViewDataSource {
 final class RatioCell: UITableViewCell {
     static let reuseIdentifier = String(describing: RatioCell.self)
 
-    private let xLabel = UILabel()
+    private let label = UILabel()
     private let yLabel = UILabel()
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -92,26 +110,17 @@ final class RatioCell: UITableViewCell {
     }
 
     func commonInit() {
-        xLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(xLabel)
-
-        //        yLabel.translatesAutoresizingMaskIntoConstraints = false
-        //        contentView.addSubview(yLabel)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
 
         let padding: CGFloat = 8
-        xLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: padding).isActive = true
-        xLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -padding).isActive = true
-        xLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding).isActive = true
-        xLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding).isActive = true
-        xLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
-
-        //        yLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: padding).isActive = true
-        //        yLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -padding).isActive = true
-        //        yLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: padding).isActive = true
-        //        yLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding).isActive = true
+        label.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: padding).isActive = true
+        label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -padding).isActive = true
+        label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
 
     func configure(_ labelString: String) {
-        xLabel.text = labelString
+        label.text = labelString
     }
 }
