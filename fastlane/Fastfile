@@ -14,8 +14,6 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    build_app(scheme: "Ratios")
-
     # Ensure that your git status is not dirty
     ensure_git_status_clean
 
@@ -33,10 +31,11 @@ platform :ios do
     # use an appropriate git tag name
     add_git_tag
 
+    build_app(scheme: "Ratios")
+
     # Push the new commit and tag back to your git remote
     # push_to_git_remote
-    
-    #
+
     upload_to_testflight
   end
 end
