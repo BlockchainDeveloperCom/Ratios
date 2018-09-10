@@ -1,0 +1,8 @@
+app_identifier("com.blockchaindeveloper.Ratios") # The bundle identifier of your app
+apple_id("pouriaba@gmail.com") # Your Apple email address
+
+itc_team_id("25413835") # iTunes Connect Team ID
+team_id("8KN7LGD597") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
