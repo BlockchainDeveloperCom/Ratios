@@ -89,7 +89,8 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RatioCell.reuseIdentifier, for: indexPath) as! RatioCell
-        cell.configure("\(model[indexPath.row])")
+        let s = String(format: "%.3f", model[indexPath.row])
+        cell.configure(s)
         return cell
     }
 }
@@ -112,10 +113,8 @@ final class RatioCell: UITableViewCell {
     func commonInit() {
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
-
-        let padding: CGFloat = 8
-        label.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: padding).isActive = true
-        label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -padding).isActive = true
+        label.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
+        label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8).isActive = true
         label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
         label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
     }
