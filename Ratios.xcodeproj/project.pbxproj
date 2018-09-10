@@ -112,6 +112,7 @@
 				TargetAttributes = {
 					71CD259D213E1CC600371526 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -335,7 +336,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.blockchaindeveloper.Ratios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -360,7 +361,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.blockchaindeveloper.Ratios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
