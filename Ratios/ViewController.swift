@@ -22,7 +22,7 @@ final class ViewController: UIViewController {
         return refreshControl
     }()
 
-    private var model = [Double]()
+    private var model = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,17 +89,20 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RatioCell.reuseIdentifier, for: indexPath) as! RatioCell
-        let s = String(format: "%.3f", model[indexPath.row])
-        cell.configure(s)
+        cell.configure("NEO to Gas", model[indexPath.row])
+
         return cell
     }
 }
 
 final class RatioCell: UITableViewCell {
+    private enum Constant {
+        static let horizontalMargin: CGFloat = 16.0
+    }
     static let reuseIdentifier = String(describing: RatioCell.self)
 
-    private let label = UILabel()
-    private let yLabel = UILabel()
+    private let leftLabel = UILabel()
+    private let rightLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -111,15 +114,25 @@ final class RatioCell: UITableViewCell {
     }
 
     func commonInit() {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
-        label.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
-        label.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8).isActive = true
-        label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
-        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        leftLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(leftLabel)
+        rightLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(rightLabel)
+
+        leftLabel.widthAnchor.constraint(equalTo: rightLabel.widthAnchor).isActive = true
+        leftLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Constant.horizontalMargin).isActive = true
+        leftLabel.rightAnchor.constraint(equalTo: rightLabel.leftAnchor, constant: 0).isActive = true
+        leftLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        leftLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+
+        rightLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Constant.horizontalMargin).isActive = true
+        rightLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        rightLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        rightLabel.textAlignment = .right
     }
 
-    func configure(_ labelString: String) {
-        label.text = labelString
+    func configure(_ leftLabelString: String, _ rightLabelString: String) {
+        leftLabel.text = leftLabelString
+        rightLabel.text = rightLabelString
     }
 }

@@ -25,9 +25,9 @@ struct Coin: Codable {
         case marketData = "market_data"
     }
 
-    static func ratio(numeratorCoin: Coin, denominatorCoin: Coin) -> Double {
-        guard denominatorCoin.marketData.currentPrice.usdPrice > 0 else { return 0.0 }
-        return numeratorCoin.marketData.currentPrice.usdPrice / denominatorCoin.marketData.currentPrice.usdPrice
+    static func ratio(numeratorCoin: Coin, denominatorCoin: Coin) -> String {
+        guard denominatorCoin.marketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
+        return String(format: "%.3f", numeratorCoin.marketData.currentPrice.usdPrice / denominatorCoin.marketData.currentPrice.usdPrice)
     }
 }
 
