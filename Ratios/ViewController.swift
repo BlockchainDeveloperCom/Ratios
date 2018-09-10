@@ -55,7 +55,7 @@ final class ViewController: UIViewController {
                 let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
                 let gasCoin: Coin = coins.first(where: { $0.id == "gas" })
                 else { return }
-            self.model = [neoCoin.marketData.currentPrice.usdPrice / gasCoin.marketData.currentPrice.usdPrice]
+            self.model = [Coin.ratio(numeratorCoin: neoCoin, denominatorCoin: gasCoin)]
             DispatchQueue.main.async {
                 self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
