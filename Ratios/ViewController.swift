@@ -10,6 +10,8 @@ import UIKit
 import PromiseKit
 
 final class ViewController: UIViewController {
+    private var isDark = true // tmp
+
     private enum RatiosError: Error {
         case generic
     }
@@ -26,7 +28,9 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ThemeService.shared.addThemeable(themeable: self)
         configureTableView()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(toggleTheme))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,9 +41,11 @@ final class ViewController: UIViewController {
     private func configureTableView() {
         tableView.rowHeight = 64
         tableView.dataSource = self
-        tableView.register(RatioCell.self, forCellReuseIdentifier: RatioCell.reuseIdentifier)
+        tableView.delegate = self
+        tableView.register(RatioTableViewCell.self, forCellReuseIdentifier: RatioTableViewCell.reuseIdentifier)
         tableView.refreshControl = refreshControl
         tableView.tableFooterView = UIView()
+        tableView.separatorInset = .zero
     }
 
     @objc func loadData(_ sender: UIRefreshControl) {
@@ -82,6 +88,17 @@ final class ViewController: UIViewController {
                 }.resume()
         }
     }
+
+    // tmp
+    @objc func toggleTheme() {
+        if isDark {
+            ThemeService.shared.theme = LightTheme()
+            isDark = false
+        } else {
+            ThemeService.shared.theme = DarkTheme()
+            isDark = true
+        }
+    }
 }
 
 extension ViewController: UITableViewDataSource {
@@ -90,51 +107,20 @@ extension ViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: RatioCell.reuseIdentifier, for: indexPath) as! RatioCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: RatioTableViewCell.reuseIdentifier, for: indexPath) as! RatioTableViewCell
         cell.configure("NEO to Gas", model[indexPath.row])
-
         return cell
     }
 }
 
-final class RatioCell: UITableViewCell {
-    private enum Constant {
-        static let horizontalMargin: CGFloat = 16.0
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    static let reuseIdentifier = String(describing: RatioCell.self)
+}
 
-    private let leftLabel = UILabel()
-    private let rightLabel = UILabel()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        commonInit()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func commonInit() {
-        leftLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(leftLabel)
-        rightLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(rightLabel)
-
-        leftLabel.widthAnchor.constraint(equalTo: rightLabel.widthAnchor).isActive = true
-        leftLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: Constant.horizontalMargin).isActive = true
-        leftLabel.rightAnchor.constraint(equalTo: rightLabel.leftAnchor, constant: 0).isActive = true
-        leftLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
-        leftLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
-
-        rightLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -Constant.horizontalMargin).isActive = true
-        rightLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
-        rightLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
-        rightLabel.textAlignment = .right
-    }
-
-    func configure(_ leftLabelString: String, _ rightLabelString: String) {
-        leftLabel.text = leftLabelString
-        rightLabel.text = rightLabelString
+extension ViewController: Themeable {
+    func applyTheme(theme: Theme) {
+        theme.applyBackgroundColor(views: [view, tableView])
     }
 }
