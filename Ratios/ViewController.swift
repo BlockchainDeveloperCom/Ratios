@@ -49,7 +49,7 @@ final class ViewController: UIViewController {
     private func loadData() {
         let neoPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/neo")
         let gasPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/gas")
-        _ = when(fulfilled: [neoPromise, gasPromise]).done { [weak self] coins in
+        when(fulfilled: [neoPromise, gasPromise]).done { [weak self] coins in
             guard
                 let `self` = self,
                 let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
@@ -60,6 +60,8 @@ final class ViewController: UIViewController {
                 self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
             }
+        }.catch { error in
+            fatalError("Error: \(error.localizedDescription)")
         }
     }
 
