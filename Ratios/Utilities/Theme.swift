@@ -66,7 +66,7 @@ final class ThemeService {
                 }
 
                 if let vc = themeableResponder as? UIViewController {
-                    vc.navigationController?.navigationBar.tintColor = theme.backgroundColor
+                    vc.navigationController?.navigationBar.tintColor = theme.tintColor
                     vc.navigationController?.navigationBar.barTintColor = theme.backgroundColor
                     vc.navigationController?.navigationBar.barStyle = theme.barStyle
                 }
@@ -74,13 +74,11 @@ final class ThemeService {
     }
 
     private func applyNavigationBarTheme(theme: Theme) {
-        guard let window = UIApplication.shared.windows.first else { return }
         let navBar = UINavigationBar.appearance()
         navBar.barStyle = theme.barStyle
         navBar.barTintColor = theme.backgroundColor
         navBar.tintColor = theme.tintColor
         navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.foregroundColor]
-        window.tintColor = UIColor.primaryColor
     }
 }
 
@@ -117,14 +115,14 @@ extension Theme {
 
 struct DarkTheme: Theme {
     var backgroundColor: UIColor { return UIColor.darkBackgroundColor }
-    var tintColor: UIColor { return UIColor.primaryColor }
+    var tintColor: UIColor { return UIColor.lightBackgroundColor }
     var foregroundColor: UIColor { return UIColor.lightBackgroundColor }
     var barStyle: UIBarStyle { return UIBarStyle.black }
 }
 
 struct LightTheme: Theme {
     var backgroundColor: UIColor { return UIColor.lightBackgroundColor }
-    var tintColor: UIColor { return UIColor.primaryColor }
+    var tintColor: UIColor { return UIColor.darkBackgroundColor }
     var foregroundColor: UIColor { return UIColor.darkBackgroundColor }
     var barStyle: UIBarStyle { return UIBarStyle.default }
 }
