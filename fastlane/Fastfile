@@ -37,7 +37,7 @@ platform :ios do
     # Push the new commit and tag back to your git remote
     # push_to_git_remote
 
-    upload_to_testflight(skip_waiting_for_build_processing: true)
+    upload_to_testflight
 
     skip_waiting_for_build_processing
   end
