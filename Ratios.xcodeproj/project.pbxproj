@@ -10,6 +10,10 @@
 		0324205C2147A337009CD3E0 /* RatioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324205B2147A337009CD3E0 /* RatioTableViewCell.swift */; };
 		0324205F2147A37B009CD3E0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324205E2147A37B009CD3E0 /* Theme.swift */; };
 		032420622147B239009CD3E0 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032420612147B239009CD3E0 /* UIColorExtensions.swift */; };
+		032420642148C506009CD3E0 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032420632148C506009CD3E0 /* Keys.swift */; };
+		032420662148CB72009CD3E0 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032420652148CB72009CD3E0 /* SwitchTableViewCell.swift */; };
+		032420692148CD15009CD3E0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032420682148CD15009CD3E0 /* SettingsViewController.swift */; };
+		0324206B2148CD32009CD3E0 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324206A2148CD32009CD3E0 /* Strings.swift */; };
 		03EB92722144D71B00800120 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03EB92712144D71B00800120 /* PromiseKit.framework */; };
 		03EB927A2144D79400800120 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03EB92762144D79400800120 /* Main.storyboard */; };
 		03EB927B2144D79400800120 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03EB92782144D79400800120 /* LaunchScreen.storyboard */; };
@@ -23,6 +27,10 @@
 		0324205B2147A337009CD3E0 /* RatioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioTableViewCell.swift; sourceTree = "<group>"; };
 		0324205E2147A37B009CD3E0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		032420612147B239009CD3E0 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		032420632148C506009CD3E0 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		032420652148CB72009CD3E0 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
+		032420682148CD15009CD3E0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0324206A2148CD32009CD3E0 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		03EB92712144D71B00800120 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		03EB92772144D79400800120 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		03EB92792144D79400800120 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -50,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				0324205B2147A337009CD3E0 /* RatioTableViewCell.swift */,
+				032420652148CB72009CD3E0 /* SwitchTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -58,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				0324205E2147A37B009CD3E0 /* Theme.swift */,
+				032420632148C506009CD3E0 /* Keys.swift */,
+				0324206A2148CD32009CD3E0 /* Strings.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -68,6 +79,15 @@
 				032420612147B239009CD3E0 /* UIColorExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		032420672148CD0E009CD3E0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				71CD25A3213E1CC600371526 /* ViewController.swift */,
+				032420682148CD15009CD3E0 /* SettingsViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		03EB92702144D71B00800120 /* Frameworks */ = {
@@ -98,11 +118,11 @@
 		71CD25A0213E1CC600371526 /* Ratios */ = {
 			isa = PBXGroup;
 			children = (
+				032420672148CD0E009CD3E0 /* Controllers */,
 				032420602147B229009CD3E0 /* Extensions */,
 				0324205D2147A36B009CD3E0 /* Utilities */,
 				0324205A2147A320009CD3E0 /* Views */,
 				71CD25A1213E1CC600371526 /* AppDelegate.swift */,
-				71CD25A3213E1CC600371526 /* ViewController.swift */,
 				71CD25A8213E1CC900371526 /* Assets.xcassets */,
 				71CD25AD213E1CC900371526 /* Info.plist */,
 				71CD25B3213F797700371526 /* Models.swift */,
@@ -209,11 +229,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				71CD25B4213F797700371526 /* Models.swift in Sources */,
+				032420662148CB72009CD3E0 /* SwitchTableViewCell.swift in Sources */,
+				0324206B2148CD32009CD3E0 /* Strings.swift in Sources */,
 				0324205C2147A337009CD3E0 /* RatioTableViewCell.swift in Sources */,
 				0324205F2147A37B009CD3E0 /* Theme.swift in Sources */,
 				032420622147B239009CD3E0 /* UIColorExtensions.swift in Sources */,
+				032420642148C506009CD3E0 /* Keys.swift in Sources */,
 				71CD25A4213E1CC600371526 /* ViewController.swift in Sources */,
 				71CD25A2213E1CC600371526 /* AppDelegate.swift in Sources */,
+				032420692148CD15009CD3E0 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

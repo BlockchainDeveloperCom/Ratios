@@ -10,8 +10,6 @@ import UIKit
 import PromiseKit
 
 final class ViewController: UIViewController {
-    private var isDark = true // tmp
-
     private enum RatiosError: Error {
         case generic
     }
@@ -30,7 +28,7 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         ThemeService.shared.addThemeable(themeable: self)
         configureTableView()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(toggleTheme))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(toggleTheme))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,15 +87,10 @@ final class ViewController: UIViewController {
         }
     }
 
-    // tmp
     @objc func toggleTheme() {
-        if isDark {
-            ThemeService.shared.theme = LightTheme()
-            isDark = false
-        } else {
-            ThemeService.shared.theme = DarkTheme()
-            isDark = true
-        }
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "SettingsNavigationViewController")
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -124,3 +117,4 @@ extension ViewController: Themeable {
         theme.applyBackgroundColor(views: [view, tableView])
     }
 }
+

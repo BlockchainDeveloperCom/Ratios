@@ -27,7 +27,7 @@ final class RatioTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func commonInit() {
+    private func commonInit() {
         ThemeService.shared.addThemeable(themeable: self)
 
         leftLabel.translatesAutoresizingMaskIntoConstraints = false

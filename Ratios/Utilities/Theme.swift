@@ -32,6 +32,22 @@ final class ThemeService {
         applyTheme(theme: theme)
     }
 
+    var isDarkThemeEnabled: Bool {
+        return UserDefaults.standard.bool(forKey: UserDefaultsKey.isDarkThemeEnabled)
+    }
+
+    func loadTheme() {
+        if isDarkThemeEnabled {
+            ThemeService.shared.theme = DarkTheme()
+        } else {
+            ThemeService.shared.theme = LightTheme()
+        }
+    }
+
+    func setDarkThemeEnabled(_ enabled: Bool) {
+        UserDefaults.standard.set(enabled, forKey: UserDefaultsKey.isDarkThemeEnabled)
+    }
+
     private func applyTheme(theme: Theme) {
         applyNavigationBarTheme(theme: theme)
         listeners.allObjects
