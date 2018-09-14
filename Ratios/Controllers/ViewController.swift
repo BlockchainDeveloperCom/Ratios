@@ -10,10 +10,6 @@ import UIKit
 import PromiseKit
 
 final class ViewController: UIViewController {
-    private enum RatiosError: Error {
-        case generic
-    }
-
     @IBOutlet var tableView: UITableView!
 
     private lazy var refreshControl: UIRefreshControl = {
@@ -28,7 +24,8 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         ThemeService.shared.addThemeable(themeable: self)
         configureTableView()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(toggleTheme))
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRatio))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(showSettings))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,45 +48,36 @@ final class ViewController: UIViewController {
     }
 
     private func loadData() {
-        let neoPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/neo")
-        let gasPromise = fetchCoin("https://api.coingecko.com/api/v3/coins/gas")
-        when(fulfilled: [neoPromise, gasPromise]).done { [weak self] coins in
-            guard
-                let `self` = self,
-                let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
-                let gasCoin: Coin = coins.first(where: { $0.id == "gas" })
-                else { return }
-            self.model = [Coin.ratio(numeratorCoin: neoCoin, denominatorCoin: gasCoin)]
-            DispatchQueue.main.async {
-                self.refreshControl.endRefreshing()
-                self.tableView.reloadData()
-            }
-        }.catch { error in
-            fatalError("Error: \(error.localizedDescription)")
-        }
-    }
-
-    private func fetchCoin(_ urlString: String) -> Promise<Coin> {
-        return Promise { seal in
-            let url = URL(string: urlString)!
-            URLSession.shared.dataTask(with: url) { data, _, error in
-                do {
-                    guard let data = data else {
-                        seal.reject(RatiosError.generic)
-                        return
-                    }
-                    let coin = try JSONDecoder().decode(Coin.self, from: data)
-                    seal.fulfill(coin)
-                } catch {
-                    seal.reject(error)
+        when(fulfilled: [API.coin(withSymbol: "neo"), API.coin(withSymbol: "gas")])
+            .done { [weak self] coins in
+                guard
+                    let `self` = self,
+                    let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
+                    let gasCoin: Coin = coins.first(where: { $0.id == "gas" })
+                    else { return }
+                self.model = [Coin.ratio(numeratorCoin: gasCoin, denominatorCoin: neoCoin)]
+                DispatchQueue.main.async {
+                    self.refreshControl.endRefreshing()
+                    self.tableView.reloadData()
                 }
-                }.resume()
+            }
+            .catch { error in
+                fatalError("Error: \(error.localizedDescription)")
         }
     }
 
-    @objc func toggleTheme() {
+    // MARK: - Actions
+
+    @objc func addRatio() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "CoinListNavigationController")
+        present(vc, animated: true, completion: nil)
+    }
+
+    @objc func showSettings() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "SettingsNavigationViewController")
+        if !UIDevice.isPhone { vc.modalPresentationStyle = .formSheet }
         present(vc, animated: true, completion: nil)
     }
 }
@@ -101,7 +89,7 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RatioTableViewCell.reuseIdentifier, for: indexPath) as! RatioTableViewCell
-        cell.configure("NEO to Gas", model[indexPath.row])
+        cell.configure("Gas to NEO", model[indexPath.row])
         return cell
     }
 }
@@ -117,4 +105,3 @@ extension ViewController: Themeable {
         theme.applyBackgroundColor(views: [view, tableView])
     }
 }
-
