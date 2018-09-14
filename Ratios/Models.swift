@@ -8,15 +8,11 @@
 
 import Foundation
 
-struct Container: Codable {
-    let coins: [Coin]
-}
-
 struct Coin: Codable {
     let id: String
     let name: String
     let symbol: String
-    let marketData: MarketData
+    let marketData: MarketData?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -26,8 +22,12 @@ struct Coin: Codable {
     }
 
     static func ratio(numeratorCoin: Coin, denominatorCoin: Coin) -> String {
-        guard denominatorCoin.marketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
-        return String(format: "%.3f", numeratorCoin.marketData.currentPrice.usdPrice / denominatorCoin.marketData.currentPrice.usdPrice)
+        guard
+            let numeratorCoinMarketData = numeratorCoin.marketData,
+            let denominatorCoinMarketData = denominatorCoin.marketData
+            else { return String(format: "%.3f", 0.0) }
+        guard denominatorCoinMarketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
+        return String(format: "%.3f", numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
     }
 }
 
