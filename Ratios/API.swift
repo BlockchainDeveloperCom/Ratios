@@ -35,9 +35,9 @@ struct API {
         }
     }
 
-    static func coin(withSymbol: String) -> Promise<Coin> {
+    static func coin(withId id: String) -> Promise<Coin> {
         return Promise { seal in
-            guard let url = URL(string: "https://api.coingecko.com/api/v3/coins/\(withSymbol)") else {
+            guard let url = URL(string: "https://api.coingecko.com/api/v3/coins/\(id)") else {
                 seal.reject(APIError.generic)
                 return
             }

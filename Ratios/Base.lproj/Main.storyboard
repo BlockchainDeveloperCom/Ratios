@@ -70,7 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZSP-3s-skE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2906.4000000000001" y="-564.46776611694156"/>
+            <point key="canvasLocation" x="2860" y="-564"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ivw-vY-S5O">
@@ -93,7 +93,7 @@
         <!--Navigation Controller-->
         <scene sceneID="3h9-j6-OKE">
             <objects>
-                <navigationController storyboardIdentifier="SettingsNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="eMF-bS-zHX" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SettingsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="eMF-bS-zHX" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="IjV-gm-8Fw">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -106,59 +106,68 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3D2-a4-0VV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2058" y="-564"/>
-        </scene>
-        <!--Coin List View Controller-->
-        <scene sceneID="q2b-ve-4NJ">
-            <objects>
-                <viewController storyboardIdentifier="CoinListViewController" id="1JE-yw-MUe" customClass="CoinListViewController" customModule="Ratios" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="b53-4h-v6y">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wcK-ca-CWY">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="1JE-yw-MUe" id="tXV-4x-mEF"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="wcK-ca-CWY" firstAttribute="top" secondItem="6fB-qS-xc7" secondAttribute="top" id="Dfp-Wg-3uZ"/>
-                            <constraint firstItem="wcK-ca-CWY" firstAttribute="leading" secondItem="6fB-qS-xc7" secondAttribute="leading" id="LaW-kd-9An"/>
-                            <constraint firstAttribute="bottom" secondItem="wcK-ca-CWY" secondAttribute="bottom" id="VCB-8N-PR1"/>
-                            <constraint firstItem="6fB-qS-xc7" firstAttribute="trailing" secondItem="wcK-ca-CWY" secondAttribute="trailing" id="cG2-J6-dg7"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="6fB-qS-xc7"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="gbQ-XW-FdG"/>
-                    <connections>
-                        <outlet property="tableView" destination="wcK-ca-CWY" id="juj-JW-3IH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bgm-D9-aW7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1193" y="165"/>
+            <point key="canvasLocation" x="2010" y="-564"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="dLH-SO-Sel">
+        <scene sceneID="pW7-4e-u5n">
             <objects>
-                <navigationController storyboardIdentifier="CoinListNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="ddm-Ro-za9" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="MRZ-PL-m62">
+                <navigationController storyboardIdentifier="RatioCreatorNavigationController" id="Hmt-CW-hy0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hUI-JC-iy2">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="1JE-yw-MUe" kind="relationship" relationship="rootViewController" id="O61-Kt-9Fz"/>
+                        <segue destination="4yS-MP-G4f" kind="relationship" relationship="rootViewController" id="kmM-Oa-Ejm"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PrF-U5-DXD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QEo-kB-vUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="417" y="165"/>
+            <point key="canvasLocation" x="439" y="161"/>
+        </scene>
+        <!--Ratio Creator View Controller-->
+        <scene sceneID="srh-SX-HD2">
+            <objects>
+                <viewController storyboardIdentifier="RatioCreatorViewController" id="4yS-MP-G4f" customClass="RatioCreatorViewController" customModule="Ratios" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kkT-ah-LgL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="AHh-fm-1te">
+                                <rect key="frame" x="20" y="184.5" width="335" height="216"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Gg-aX-7yf">
+                                        <rect key="frame" x="0.0" y="0.0" width="160" height="216"/>
+                                    </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWO-YY-VhT">
+                                        <rect key="frame" x="160" y="0.0" width="15.5" height="216"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FoY-Md-fBN">
+                                        <rect key="frame" x="175.5" y="0.0" width="159.5" height="216"/>
+                                    </pickerView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="AHh-fm-1te" firstAttribute="leading" secondItem="ruV-kN-A3u" secondAttribute="leading" constant="20" id="96h-dZ-klH"/>
+                            <constraint firstItem="AHh-fm-1te" firstAttribute="centerY" secondItem="ruV-kN-A3u" secondAttribute="centerY" multiplier="0.8" id="GyG-Df-Geh"/>
+                            <constraint firstItem="ruV-kN-A3u" firstAttribute="trailing" secondItem="AHh-fm-1te" secondAttribute="trailing" constant="20" id="MoK-u9-8Ca"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ruV-kN-A3u"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fn4-Rx-5Be"/>
+                    <connections>
+                        <outlet property="denPicker" destination="FoY-Md-fBN" id="Tih-sO-FWN"/>
+                        <outlet property="numPicker" destination="3Gg-aX-7yf" id="3HR-wk-2wS"/>
+                        <outlet property="relationLabel" destination="bWO-YY-VhT" id="IiQ-E4-7Xv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Thc-eN-4nn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1193" y="161"/>
         </scene>
     </scenes>
 </document>

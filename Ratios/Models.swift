@@ -8,6 +8,29 @@
 
 import Foundation
 
+struct Ratio: Codable {
+    let numeratorCoin: Coin
+    let denominatorCoin: Coin
+
+    var ratioValueString: String {
+        guard
+            let numeratorCoinMarketData = numeratorCoin.marketData,
+            let denominatorCoinMarketData = denominatorCoin.marketData
+            else { return String(format: "%.3f", 0.0) }
+        guard denominatorCoinMarketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
+        return String(format: "%.3f", numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
+    }
+}
+
+extension Ratio {
+    init(numerator: Coin, denominator: Coin) {
+        self.numeratorCoin = numerator
+        self.denominatorCoin = denominator
+    }
+}
+
+extension Ratio: Hashable { }
+
 struct Coin: Codable {
     let id: String
     let name: String
@@ -20,16 +43,9 @@ struct Coin: Codable {
         case symbol
         case marketData = "market_data"
     }
-
-    static func ratio(numeratorCoin: Coin, denominatorCoin: Coin) -> String {
-        guard
-            let numeratorCoinMarketData = numeratorCoin.marketData,
-            let denominatorCoinMarketData = denominatorCoin.marketData
-            else { return String(format: "%.3f", 0.0) }
-        guard denominatorCoinMarketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
-        return String(format: "%.3f", numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
-    }
 }
+
+extension Coin: Hashable { }
 
 struct MarketData: Codable {
     let currentPrice: CurrentPrice
@@ -39,6 +55,8 @@ struct MarketData: Codable {
     }
 }
 
+extension MarketData: Hashable { }
+
 struct CurrentPrice: Codable {
     let usdPrice: Double
 
@@ -46,3 +64,5 @@ struct CurrentPrice: Codable {
         case usdPrice = "usd"
     }
 }
+
+extension CurrentPrice: Hashable { }
