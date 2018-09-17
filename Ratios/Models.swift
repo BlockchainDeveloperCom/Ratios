@@ -15,9 +15,9 @@ struct Ratio: Codable {
     var ratioValueString: String {
         guard
             let numeratorCoinMarketData = numeratorCoin.marketData,
-            let denominatorCoinMarketData = denominatorCoin.marketData
+            let denominatorCoinMarketData = denominatorCoin.marketData,
+            denominatorCoinMarketData.currentPrice.usdPrice > 0
             else { return String(format: "%.3f", 0.0) }
-        guard denominatorCoinMarketData.currentPrice.usdPrice > 0 else { return String(format: "%.3f", 0.0) }
         return String(format: "%.3f", numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
     }
 }
@@ -29,7 +29,11 @@ extension Ratio {
     }
 }
 
-extension Ratio: Hashable { }
+extension Ratio: Hashable {
+    var hashValue: Int {
+        return numeratorCoin.id.hash ^ denominatorCoin.id.hash
+    }
+}
 
 struct Coin: Codable {
     let id: String
@@ -45,7 +49,11 @@ struct Coin: Codable {
     }
 }
 
-extension Coin: Hashable { }
+extension Coin: Hashable {
+    var hashValue: Int {
+        return id.hash
+    }
+}
 
 struct MarketData: Codable {
     let currentPrice: CurrentPrice
