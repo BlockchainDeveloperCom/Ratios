@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032352AB214F72F7006361A2 /* Disk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032352AA214F72F7006361A2 /* Disk.framework */; };
 		0324205C2147A337009CD3E0 /* RatioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324205B2147A337009CD3E0 /* RatioTableViewCell.swift */; };
 		0324205F2147A37B009CD3E0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0324205E2147A37B009CD3E0 /* Theme.swift */; };
 		032420622147B239009CD3E0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032420612147B239009CD3E0 /* Extensions.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		032352AA214F72F7006361A2 /* Disk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Disk.framework; path = Carthage/Build/iOS/Disk.framework; sourceTree = "<group>"; };
 		0324205B2147A337009CD3E0 /* RatioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatioTableViewCell.swift; sourceTree = "<group>"; };
 		0324205E2147A37B009CD3E0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		032420612147B239009CD3E0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03EB92722144D71B00800120 /* PromiseKit.framework in Frameworks */,
+				032352AB214F72F7006361A2 /* Disk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +101,7 @@
 		03EB92702144D71B00800120 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				032352AA214F72F7006361A2 /* Disk.framework */,
 				03EB92712144D71B00800120 /* PromiseKit.framework */,
 			);
 			name = Frameworks;
@@ -216,12 +220,14 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Disk.framework",
 			);
 			name = "Run Script (Carthage)";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PromiseKit.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Disk.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

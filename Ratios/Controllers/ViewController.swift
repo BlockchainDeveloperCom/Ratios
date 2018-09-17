@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import Disk
 
 final class ViewController: UIViewController {
 
@@ -53,25 +54,28 @@ final class ViewController: UIViewController {
     }
 
     private func loadData() {
-        when(fulfilled: [API.coin(withId: "neo"), API.coin(withId: "gas")])
-            .done { [weak self] coins in
-                guard
-                    let `self` = self,
-                    let neoCoin: Coin = coins.first(where: { $0.id == "neo" }),
-                    let gasCoin: Coin = coins.first(where: { $0.id == "gas" })
-                    else { return }
-
-                var ratiosSet = Set<Ratio>(self.ratios)
-                ratiosSet.insert(Ratio(numerator: gasCoin, denominator: neoCoin))
-                self.ratios = Array(ratiosSet).sorted(by: { $0.numeratorCoin.name < $1.numeratorCoin.name })
-
-                DispatchQueue.main.async {
-                    self.refreshControl.endRefreshing()
-                    self.tableView.reloadData()
+        do {
+            ratios = try Disk.retrieve("ratios.json", from: .documents, as: [Ratio].self)
+            for ratio in ratios {
+                let numeratorCoin = ratio.numeratorCoin
+                let denominatorCoin = ratio.denominatorCoin
+                when(fulfilled: [API.coin(withId: numeratorCoin.id), API.coin(withId: denominatorCoin.id)])
+                    .done { [weak self] coins in
+                        guard let `self` = self else { return }
+                        guard let nCoin = coins.first(where: { $0.id == numeratorCoin.id }) else { return }
+                        guard let dCoin = coins.first(where: { $0.id == denominatorCoin.id }) else { return }
+                        self.insert(Ratio(numerator: nCoin, denominator: dCoin))
+                    }
+                    .catch { error in
+                        fatalError("Error: \(error.localizedDescription)")
                 }
             }
-            .catch { error in
-                fatalError("Error: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                self.tableView.reloadData()
+            }
+        } catch {
+            return
         }
     }
 
@@ -123,7 +127,31 @@ extension ViewController: Themeable {
 
 extension ViewController: RatioCreatorViewControllerDelegate {
     func ratioCreatorViewControllerDidSelectRatio(with numerator: Coin, denominator: Coin) {
-        ratios.append(Ratio(numerator: numerator, denominator: denominator))
+        insert(Ratio(numerator: numerator, denominator: denominator))
         tableView.reloadData()
+    }
+}
+
+// MARK: - Data Management
+
+extension ViewController {
+    // todo find a better place for this functionality
+
+    //    private func delete(_ ratio: Ratio, from ratios: [Ratio]) -> [Ratio] {
+    //        var ratiosSet = Set<Ratio>(ratios)
+    //        ratiosSet.remove(ratio)
+    //        return Array(ratiosSet)
+    //    }
+
+    private func insert(_ ratio: Ratio) {
+        var ratiosSet = Set<Ratio>(self.ratios)
+        if let oldRatio = ratiosSet.first(where: { $0 == ratio }) { ratiosSet.remove(oldRatio) }
+        ratiosSet.insert(ratio)
+        self.ratios = Array(ratiosSet).sorted(by: { $0.numeratorCoin.name < $1.numeratorCoin.name })
+        do {
+            try Disk.save(self.ratios, to: .documents, as: "ratios.json")
+        } catch {
+            print("Could not save to disk.")
+        }
     }
 }

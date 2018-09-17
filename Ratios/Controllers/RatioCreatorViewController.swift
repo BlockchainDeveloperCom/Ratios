@@ -55,6 +55,8 @@ final class RatioCreatorViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
+    // Tad lazy here making a request basically just to present the names. But will leave it as is
+    // for now on the off chance that at some point in the future we display more information.
     private func loadData(completion: @escaping () -> ()) {
         when(fulfilled: [API.coin(withId: "neo"), API.coin(withId: "gas"), API.coin(withId: "bitcoin")])
             .done { [weak self] coins in

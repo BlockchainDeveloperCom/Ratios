@@ -29,6 +29,13 @@ extension Ratio {
     }
 }
 
+extension Ratio: Equatable {
+    static func == (lhs: Ratio, rhs: Ratio) -> Bool {
+        return lhs.numeratorCoin.id == rhs.numeratorCoin.id &&
+            lhs.denominatorCoin.id == rhs.denominatorCoin.id
+    }
+}
+
 extension Ratio: Hashable {
     var hashValue: Int {
         return numeratorCoin.id.hash ^ denominatorCoin.id.hash
