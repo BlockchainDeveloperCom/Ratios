@@ -117,6 +117,16 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteRowAction = UITableViewRowAction(style: .destructive, title: "Remove") { [weak self] _, ip in
+            self?.deleteRatio(at: ip)
+            tableView.performBatchUpdates({
+                tableView.deleteRows(at: [ip], with: .automatic)
+            }, completion: nil)
+        }
+        return [deleteRowAction]
+    }
 }
 
 extension ViewController: Themeable {
@@ -135,21 +145,22 @@ extension ViewController: RatioCreatorViewControllerDelegate {
 // MARK: - Data Management
 
 extension ViewController {
-    // todo find a better place for this functionality
-
-    //    private func delete(_ ratio: Ratio, from ratios: [Ratio]) -> [Ratio] {
-    //        var ratiosSet = Set<Ratio>(ratios)
-    //        ratiosSet.remove(ratio)
-    //        return Array(ratiosSet)
-    //    }
+    private func deleteRatio(at indexPath: IndexPath) {
+        ratios.remove(at: indexPath.row)
+        saveRatiosToDisk()
+    }
 
     private func insert(_ ratio: Ratio) {
-        var ratiosSet = Set<Ratio>(self.ratios)
+        var ratiosSet = Set<Ratio>(ratios)
         if let oldRatio = ratiosSet.first(where: { $0 == ratio }) { ratiosSet.remove(oldRatio) }
         ratiosSet.insert(ratio)
-        self.ratios = Array(ratiosSet).sorted(by: { $0.numeratorCoin.name < $1.numeratorCoin.name })
+        ratios = Array(ratiosSet).sorted(by: { $0.numeratorCoin.name < $1.numeratorCoin.name })
+        saveRatiosToDisk()
+    }
+
+    private func saveRatiosToDisk() {
         do {
-            try Disk.save(self.ratios, to: .documents, as: "ratios.json")
+            try Disk.save(ratios, to: .documents, as: "ratios.json")
         } catch {
             print("Could not save to disk.")
         }
