@@ -13,12 +13,13 @@ struct Ratio: Codable {
     let denominatorCoin: Coin
 
     var ratioValueString: String {
+        let formatString = (numeratorCoin.id == "bitcoin" || denominatorCoin.id == "bitcoin") ? "%.8f" : "%.2f"
         guard
             let numeratorCoinMarketData = numeratorCoin.marketData,
             let denominatorCoinMarketData = denominatorCoin.marketData,
             denominatorCoinMarketData.currentPrice.usdPrice > 0
-            else { return String(format: "%.3f", 0.0) }
-        return String(format: "%.3f", numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
+            else { return String(format: formatString, 0.0) }
+        return String(format: formatString, numeratorCoinMarketData.currentPrice.usdPrice / denominatorCoinMarketData.currentPrice.usdPrice)
     }
 }
 
