@@ -30,6 +30,7 @@ final class RatioListViewController: UIViewController {
         configureTableView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRatio))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(showSettings))
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
