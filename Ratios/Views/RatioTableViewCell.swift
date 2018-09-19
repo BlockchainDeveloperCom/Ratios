@@ -29,6 +29,7 @@ final class RatioTableViewCell: UITableViewCell {
 
     private func commonInit() {
         ThemeService.shared.addThemeable(themeable: self)
+        selectionStyle = .none
 
         leftLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(leftLabel)
