@@ -28,7 +28,10 @@ final class RatioListViewController: UIViewController {
         super.viewDidLoad()
         ThemeService.shared.addThemeable(themeable: self)
         configureTableView()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRatio))
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addRatio)),
+            UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(presentRxViewController)),
+        ]
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(showSettings))
         NotificationCenter.default.addObserver(self, selector: #selector(loadData(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
@@ -99,6 +102,12 @@ final class RatioListViewController: UIViewController {
         if !UIDevice.isPhone { vc.modalPresentationStyle = .formSheet }
         present(vc, animated: true, completion: nil)
     }
+
+    @objc func presentRxViewController() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "RxViewController")
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension RatioListViewController: UITableViewDataSource {
@@ -165,5 +174,67 @@ extension RatioListViewController {
         } catch {
             print("Could not save to disk.")
         }
+    }
+}
+
+
+
+
+
+
+
+
+import RxSwift
+
+final class RxViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // MARK: - Sequences
+
+        //let helloSequence = Observable.from(["H","e","l","l","o"])
+        //_ = helloSequence.subscribe { event in
+        //    switch event {
+        //    case .next(let value):
+        //        print(value)
+        //    case .error(let error):
+        //        print(error)
+        //    case .completed:
+        //        print("completed")
+        //    }
+        //}
+
+        // MARK: - Subjects - Publish Subject
+
+        let aPublishSubject = PublishSubject<String>()
+
+        // another way to subscribe
+        // s0 is subscribing before any changes to the PublishSubject after 0 and 1 have been 'onNext'ed.
+        // So it will get updates from here going forward.
+        let s0 = aPublishSubject.subscribe(onNext: { print("first subscriber: \($0)") })
+
+        aPublishSubject.onNext("0")
+
+        // one way subscribe
+        // _ = ps.subscribe { event in
+        //     switch event {
+        //     case .next(let value): print(value)
+        //     default: ()
+        //     }
+        // }
+
+        aPublishSubject.onNext("1")
+
+        // s1 is subscribing to changes for the PublishSubject after 0 and 1 have been 'onNext'ed.
+        // So it will _only_ get updates from here going forward.
+        let s1 = aPublishSubject.subscribe(onNext: { print("second subscriber: \($0)") })
+
+        aPublishSubject.onNext("2")
+
+        // MARK: - Subjects - Behavior Subject
+
+
+
+        
     }
 }
